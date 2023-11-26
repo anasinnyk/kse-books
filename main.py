@@ -1,5 +1,6 @@
 import argparse
-import uuid
+
+import command.factory as factory
 
 parser = argparse.ArgumentParser(description="Manage books")
 
@@ -16,28 +17,4 @@ add_parser.add_argument("--year", "-y", type=int, help="year of the book")
 describe_parser.add_argument("id", help="id of the book")
 
 args = parser.parse_args()
-if args.command == "add":
-    with open("books.txt", "a") as f:
-        id = uuid.uuid4()
-        f.write(f"{id}|{args.name}|{args.author}|{args.year}\n")
-        print(f"New book added with ID: {id}")
-
-elif args.command == "list":
-    with open("books.txt", "r") as f:
-        for line in f:
-            id, name, author, year = line.strip().split("|")
-            print(f"{id} {name} {author} {year}")
-
-elif args.command == "describe":
-    with open("books.txt", "r") as f:
-        for line in f:
-            id, name, author, year = line.strip().split("|")
-            if id == args.id:
-                print(f"{id} {name} {author} {year}")
-                break
-        else:
-            print("Book not found")
-            exit(1)
-else:
-    print("unknown command")
-    exit(1)
+factory.create(args).execute()
