@@ -1,6 +1,7 @@
 import argparse
 
 import command.factory as factory
+from db import DBFile
 
 parser = argparse.ArgumentParser(description="Manage books")
 
@@ -17,4 +18,5 @@ add_parser.add_argument("--year", "-y", type=int, help="year of the book")
 describe_parser.add_argument("id", help="id of the book")
 
 args = parser.parse_args()
-factory.create(args).execute()
+db = DBFile("books.txt")
+factory.create(args, db).execute()

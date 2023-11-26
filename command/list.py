@@ -1,9 +1,8 @@
 class ListCommand:
-    def __init__(self, args):
+    def __init__(self, args, db):
         self.args = args
+        self.db = db
 
     def execute(self):
-        with open("books.txt", "r") as f:
-            for line in f:
-                id, name, author, year = line.strip().split("|")
-                print(f"{id} {name} {author} {year}")
+        for record in self.db.list():
+            print(" ".join(record))

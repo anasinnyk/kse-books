@@ -1,14 +1,12 @@
 class DescribeCommand:
-    def __init__(self, args):
+    def __init__(self, args, db):
         self.args = args
+        self.db = db
 
     def execute(self):
-        with open("books.txt", "r") as f:
-            for line in f:
-                id, name, author, year = line.strip().split("|")
-                if id == self.args.id:
-                    print(f"{id} {name} {author} {year}")
-                    break
-            else:
-                print("Book not found")
-                exit(1)
+        book = self.db.find_by_id(self.args.id)
+        if not book:
+            print("Book not found")
+            exit(1)
+        id, name, author, year = book
+        print(f"{id} {name} {author} {year}")
